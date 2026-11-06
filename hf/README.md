@@ -41,10 +41,10 @@ Scores measure what a prompt's text states, matched by regular expressions. They
 
 ## Source, methodology and code
 
-Everything, including the datasheet, methodology and the script that re-runs the study from the pinned sources, is at **https://github.com/shmindmaster/agent-prompt-safeguards-2026**. Write-up: https://saroshhussain.com/blog/what-356-ai-system-prompts-write-down
+Everything, including the datasheet, methodology and the script that re-runs the study from the pinned sources, is at **https://github.com/shmindmaster/safeguards**. Write-up: https://saroshhussain.com/blog/what-356-ai-system-prompts-write-down
 
 ## Licence and citation
 
 Data: CC BY 4.0. Code (in the GitHub repository): Apache-2.0.
 
-> Hussain, S. (2026). *Agent prompt safeguards 2026: written safeguards in 356 AI system prompts* (Version 1.0.0) [Data set]. https://github.com/shmindmaster/agent-prompt-safeguards-2026
+> Hussain, S. (2026). *Agent prompt safeguards 2026: written safeguards in 356 AI system prompts* (Version 1.0.0) [Data set]. https://github.com/shmindmaster/safeguards

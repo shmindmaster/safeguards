@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 """Re-run the 356-prompt written-safeguard study and regenerate every data file.
 
-    python scoring/score.py             # fetch the pinned upstream commits, score, write
-    python scoring/score.py --offline   # reuse an existing .cache/ checkout
-    python scoring/score.py --check     # fail if the committed files differ from a fresh run
+    docker compose run --build --rm score   # host: fetch, score, fail on drift
+    python scoring/score.py --check         # inside the image
+    python scoring/score.py --offline       # reuse the mounted .cache volume
 
 Standard library only (Python 3.10+) plus git on PATH.
 
 What it does:
 
-1. Fetches each source collection at one pinned commit into .cache/. Nothing
-   fetched is committed to this repository: the prompt text is third-party
-   material and is never redistributed here.
+1. Fetches each source collection at one pinned commit into ``/app/.cache``
+   (the ``safeguards-cache`` volume). Nothing fetched is committed to this
+   repository: the prompt text is third-party material and is never
+   redistributed here.
 2. Reads each prompt from the committed git blob (not the working tree), so the
    content hash is the same on every OS regardless of line-ending settings.
 3. Scores every prompt against the 23 controls in scoring/rules.py.
@@ -58,7 +59,7 @@ DATA = REPO / "data"
 PROMPTS_CSV = DATA / "prompts.csv"
 CONTROLS_CSV = DATA / "controls.csv"
 SUMMARY_JSON = DATA / "summary.json"
-RESULTS_MD = REPO / "RESULTS.md"
+RESULTS_MD = REPO / "docs" / "RESULTS.md"
 CHART_SVG = REPO / "figures" / "controls-by-source.svg"
 
 DATASET_VERSION = "1.0.0"

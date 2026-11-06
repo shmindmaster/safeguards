@@ -17,7 +17,7 @@ A prompt's category comes from the collection it was taken from. Nobody labelled
 
 ## Scoring
 
-The 23 safeguards and their rules are in [`scoring/rules.py`](scoring/rules.py) (ruleset `prompt-safeguards@0.6.0`).
+The 23 safeguards and their rules are in [`scoring/rules.py`](../scoring/rules.py) (ruleset `prompt-safeguards@0.6.0`).
 
 1. Each safeguard has one or more case-insensitive regular expressions. Several rules can express the same safeguard; they count once.
 2. The safeguards fall into 8 groups (injection, hallucination, citation, cost, human approval, safe stopping, audit, compliance) of 2 to 4 safeguards each.
@@ -44,11 +44,11 @@ Before writing anything, `scoring/score.py` builds every output in memory and ch
 
 ## Reproduction
 
-```bash
-python scoring/score.py --check
+```text
+docker compose run --build --rm score
 ```
 
-This fetches both collections at their pinned commits, re-scores all 356 prompts, and fails if any committed file (`data/*`, `RESULTS.md`, `figures/controls-by-source.svg`) differs from the fresh output. CI runs it on every push. If an upstream collection is deleted or its history rewritten, the fetch fails: that is reported, not hidden.
+This fetches both collections at their pinned commits, re-scores all 356 prompts, and fails if any committed file (`data/*`, `docs/RESULTS.md`, `figures/controls-by-source.svg`) differs from the fresh output. CI runs it on every push. If an upstream collection is deleted or its history rewritten, the fetch fails: that is reported, not hidden.
 
 ## Changes from the original report
 

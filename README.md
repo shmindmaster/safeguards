@@ -19,7 +19,7 @@
 
 - **Five safeguards appear in no prompt at all:** grounding answers in provided sources, logging actions and decisions, keeping that log tamper-evident, recording who did what and when, and naming a data-protection technique. Looser patterns found at most 2 of 356 for any of them.
 
-Full tables: [RESULTS.md](RESULTS.md).
+Full tables: [docs/RESULTS.md](docs/RESULTS.md).
 
 ## If you build agents
 
@@ -29,7 +29,7 @@ The four rows in the table above are cheap to add to your own agent's instructio
 
 A score is the share of 23 safeguards a prompt's **text** states, averaged across 8 groups: prompt-injection resistance, hallucination guardrails, citation, cost limits, human approval, safe stopping, audit trail and compliance. Matching uses published regular-expression rules (ruleset `prompt-safeguards@0.6.0`), with no model, so the same text always gets the same score.
 
-It does **not** measure whether the agent obeys its prompt, how well the prompt is written, or what controls exist in the product's code. A low score means the text is silent, not that the product is unsafe. Both source collections are leaked or aggregated sets of unknown completeness, not random samples, and both lean toward coding assistants. See [DATASHEET.md](DATASHEET.md) for the full list of limits.
+It does **not** measure whether the agent obeys its prompt, how well the prompt is written, or what controls exist in the product's code. A low score means the text is silent, not that the product is unsafe. Both source collections are leaked or aggregated sets of unknown completeness, not random samples, and both lean toward coding assistants. See [docs/DATA.md](docs/DATA.md) for the full list of limits.
 
 ## Files
 
@@ -40,29 +40,29 @@ It does **not** measure whether the agent obeys its prompt, how well the prompt 
 | [`data/summary.json`](data/summary.json) | Distributions, the statistical test, the zero-floor check, the never-stated list, sources and licence notes |
 | [`scoring/score.py`](scoring/score.py) | Re-runs the study: fetches both sources at their pinned commits, scores, and regenerates every file above |
 | [`scoring/rules.py`](scoring/rules.py) | The 23 safeguards and their matching rules |
-| [`METHODOLOGY.md`](METHODOLOGY.md) | Scoring formula, statistics, and the no-text guarantee |
-| [`DATASHEET.md`](DATASHEET.md) | Motivation, composition, collection, uses and limits |
+| [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) | Scoring formula, statistics, and the no-text guarantee |
+| [`docs/DATA.md`](docs/DATA.md) | Motivation, composition, collection, uses and limits |
 
 ## Reproduce
 
-Needs Python 3.10+ and git. No packages to install. Works on Windows, macOS and Linux; CI runs both checks on all three.
+Git and Docker are enough. CI runs both checks in `infra/docker/Dockerfile`.
 
-```bash
-python scoring/score.py --check   # fetch, re-score, and confirm every committed file matches
-python tests/test_dataset.py      # offline consistency checks on the committed data
+```text
+docker compose run --build --rm test    # offline consistency checks
+docker compose run --build --rm score   # fetch, re-score, and confirm every committed file matches
 ```
 
-The first command downloads the two source collections at their pinned commits into `.cache/` (ignored by git).
+`score` keeps the upstream checkouts in the `safeguards-cache` volume, not in the checkout.
 
 ## Licensing
 
-- **Data** (`data/`, `figures/`, `RESULTS.md`): [CC BY 4.0](LICENSE-DATA).
+- **Data** (`data/`, `figures/`, `docs/RESULTS.md`): [CC BY 4.0](LICENSE-DATA).
 - **Code** (`scoring/`, `tests/`): [Apache-2.0](LICENSE).
-- **Third-party prompt text is not in this repository.** Each row identifies its prompt by upstream path, a link to the file at a pinned commit, and content hashes, so you can fetch the exact text from its source and verify it. No prompt text or quotation from any prompt is published here, and `scoring/score.py` refuses to write output that contains any 40-character run of prompt text. The prompts belong to the vendors and GPT authors who wrote them; the collections that host them carry their own terms (see [DATASHEET.md](DATASHEET.md#licensing-of-the-sources)).
+- **Third-party prompt text is not in this repository.** Each row identifies its prompt by upstream path, a link to the file at a pinned commit, and content hashes, so you can fetch the exact text from its source and verify it. No prompt text or quotation from any prompt is published here, and `scoring/score.py` refuses to write output that contains any 40-character run of prompt text. The prompts belong to the vendors and GPT authors who wrote them; the collections that host them carry their own terms (see [docs/DATA.md](docs/DATA.md#licensing-of-the-sources)).
 
 ## Cite
 
-> Hussain, S. (2026). *Agent prompt safeguards 2026: written safeguards in 356 AI system prompts* (Version 1.0.0) [Data set]. https://github.com/shmindmaster/agent-prompt-safeguards-2026
+> Hussain, S. (2026). *Agent prompt safeguards 2026: written safeguards in 356 AI system prompts* (Version 1.0.0) [Data set]. https://github.com/shmindmaster/safeguards
 
 See [`CITATION.cff`](CITATION.cff). Write-up: [What 356 AI system prompts write down](https://saroshhussain.com/blog/what-356-ai-system-prompts-write-down).
 
